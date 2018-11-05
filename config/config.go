@@ -6,11 +6,12 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/fatih/color"
-	cp "github.com/nmrshll/go-cp"
-	gphotos "github.com/nmrshll/google-photos-api-client-go/lib-gphotos"
+	"github.com/nmrshll/go-cp"
+	"github.com/nmrshll/google-photos-api-client-go/lib-gphotos"
 	"github.com/nmrshll/gphotos-uploader-cli/fileshandling"
 	"github.com/palantir/stacktrace"
 	"golang.org/x/oauth2"
@@ -91,6 +92,11 @@ Edit it by running:
 `,
 		))
 		spew.Dump(configPathAbsolute)
+		dir := filepath.Dir(configPathAbsolute)
+		err = os.MkdirAll(dir, 755)
+		if err != nil {
+			log.Fatal(err)
+		}
 		f, err := os.Create(configPathAbsolute)
 		if err != nil {
 			log.Fatal(err)
